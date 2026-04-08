@@ -1,0 +1,17 @@
+# Node / Next.js
+kp-dev-website/node_modules/
+kp-dev-website/.next/
+kp-dev-website/out/
+kp-dev-website/build/
+kp-dev-website/.env*.local
+
+# Python / FastAPI
+admin-backend/venv/
+admin-backend/__pycache__/
+admin-backend/*.pyc
+admin-backend/admin.db
+
+# Misc
+.DS_Store
+.idea/
+.vscode/
