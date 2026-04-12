@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
     // Empty current directory before writing new frames
     const existingOldFiles = fs.readdirSync(publicSequenceDir);
     for (const file of existingOldFiles) {
-      // Clean up previous image frames so old images don't leak
       if (file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png') || file.endsWith('.webp')) {
          await rm(path.join(publicSequenceDir, file), { force: true });
       }
@@ -48,8 +47,6 @@ export async function POST(req: NextRequest) {
     let i = 0;
     for (const file of files) {
       const buffer = Buffer.from(await file.arrayBuffer());
-      
-      // We save them strictly as .jpg because the existing ScrollCanvasRenderer expects /sequence/frame_${i}.jpg
       const filePath = path.join(publicSequenceDir, `frame_${i}.jpg`);
       await writeFile(filePath, buffer);
       i++;
@@ -68,3 +65,4 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
