@@ -1,6 +1,9 @@
 export function MainFooter() {
   return (
-    <footer className="relative w-full bg-[#050505] pt-32 pb-12 z-10 border-t border-white/5">
+    <footer
+      id="contact"
+      className="relative w-full bg-[#050505] pt-32 pb-12 z-10 border-t border-white/5"
+    >
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-16">
         
         {/* Branding block */}

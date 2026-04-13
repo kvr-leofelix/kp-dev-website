@@ -11,6 +11,10 @@
   html, body {
     @apply bg-[#050505] text-white/60 font-sans antialiased;
   }
+
+  html {
+    scroll-padding-top: 8rem;
+  }
   
   h1, h2, h3, h4, h5, h6 {
     @apply text-white/90 tracking-tight;

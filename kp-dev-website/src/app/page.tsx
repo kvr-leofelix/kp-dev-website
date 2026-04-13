@@ -1,7 +1,6 @@
 import { ScrollCanvasRenderer } from "@/components/ScrollCanvasRenderer";
 import { ClubHero } from "@/components/ClubHero";
 import { StatsSection } from "@/components/StatsSection";
-import { EventsSection } from "@/components/EventsSection";
 import { ProjectsAccordion } from "@/components/ProjectsAccordion";
 import { MarqueeSection } from "@/components/MarqueeSection";
 import { MainFooter } from "@/components/MainFooter";
@@ -20,7 +19,6 @@ export default function Home() {
       <div className="relative z-10 w-full bg-[#050505] mt-[-1px]">
           <ClubHero />
           <StatsSection />
-          <EventsSection />
           <ProjectsAccordion />
           <MarqueeSection />
           <MainFooter />

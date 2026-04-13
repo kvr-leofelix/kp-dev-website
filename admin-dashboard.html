@@ -163,6 +163,14 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
                 Roadmap
             </button>
+            <button class="nav-btn w-full flex items-center gap-3 text-left px-4 py-3 rounded-xl text-white/60 hover:bg-accent/10 hover:text-accent transition-colors" data-target="achievement">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                Achievement
+            </button>
+            <button class="nav-btn w-full flex items-center gap-3 text-left px-4 py-3 rounded-xl text-white/60 hover:bg-accent/10 hover:text-accent transition-colors" data-target="hackathon">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                Hackathon
+            </button>
         </nav>
 
         <div class="mt-auto">
@@ -265,44 +273,263 @@
 
         <!-- Tab: Team -->
         <section id="team" class="tab-content max-w-6xl mx-auto mt-8">
-            <header class="mb-10">
-                <h1 class="text-3xl font-semibold mb-2 text-accent tracking-tight">Team Management</h1>
-                <p class="text-white/80 text-sm">Manage developer access and permissions.</p>
+            <header class="mb-10 flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-semibold mb-2 text-accent tracking-tight">Team Management</h1>
+                    <p class="text-white/80 text-sm">Add and manage team members. Photos will appear on the website.</p>
+                </div>
+                <button id="add-member-btn" class="px-6 py-3 bg-accent text-black font-bold rounded-xl shadow-[0_0_15px_var(--color-accent-dim)] hover:shadow-[0_0_20px_var(--color-accent-glow)] hover:scale-[1.02] active:scale-95 transition-all text-sm tracking-wider uppercase">
+                    + Add Member
+                </button>
             </header>
-            <div class="glass-panel border-dashed p-10 rounded-2xl flex flex-col items-center justify-center text-center">
+
+            <!-- Team Members Grid -->
+            <div id="team-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
+                <!-- Members will be loaded dynamically -->
+            </div>
+
+            <div id="team-empty" class="glass-panel border-dashed p-10 rounded-2xl flex flex-col items-center justify-center text-center hidden">
                 <div class="w-12 h-12 rounded-full bg-accent/10 mb-4 flex items-center justify-center border border-accent/20">
                     <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                 </div>
-                <h3 class="text-base font-medium text-white mb-1">Invite Team Members</h3>
-                <p class="text-sm text-accent/70 max-w-sm mx-auto">Collaboration tools are not yet active in this environment.</p>
+                <h3 class="text-base font-medium text-white mb-1">No Team Members Yet</h3>
+                <p class="text-sm text-accent/70 max-w-sm mx-auto">Click "Add Member" above to add your first team member.</p>
             </div>
         </section>
+
+        <!-- Add Member Modal -->
+        <div id="add-member-modal" class="fixed inset-0 z-[300] bg-black/80 backdrop-blur-xl flex items-center justify-center hidden">
+            <div class="glass-panel p-8 rounded-2xl max-w-md w-full mx-4 shadow-[0_0_50px_var(--color-accent-dim)]">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-xl font-semibold text-accent tracking-tight">Add Team Member</h2>
+                    <button id="close-modal-btn" class="p-2 text-white/50 hover:text-accent hover:bg-accent/10 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                </div>
+
+                <!-- Photo Upload -->
+                <div id="member-photo-zone" class="relative border border-dashed border-accent/30 rounded-xl p-6 mb-5 flex flex-col items-center cursor-pointer hover:border-accent/60 transition-colors bg-black/30">
+                    <input type="file" id="member-photo-input" accept="image/*" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                    <div id="member-photo-preview" class="w-20 h-20 rounded-full bg-accent/10 mb-3 flex items-center justify-center border border-accent/20 overflow-hidden">
+                        <svg id="member-photo-icon" class="w-8 h-8 text-accent/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                        <img id="member-photo-thumb" class="w-full h-full object-cover hidden" />
+                    </div>
+                    <p class="text-xs text-accent/60 tracking-wider">Click to upload photo</p>
+                </div>
+
+                <!-- Name -->
+                <input type="text" id="member-name" placeholder="Full Name..." 
+                    class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl mb-4 focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+
+                <!-- Year -->
+                <input type="text" id="member-year" placeholder="Year (e.g. 2025, Alumni)..." 
+                    class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl mb-6 focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+
+                <!-- Submit -->
+                <button id="submit-member-btn" class="w-full bg-accent text-black font-bold py-3 rounded-xl shadow-[0_0_15px_var(--color-accent-dim)] hover:shadow-[0_0_25px_var(--color-accent-glow)] tracking-wider uppercase transition-all text-sm">
+                    Add to Team
+                </button>
+                <p id="member-error" class="text-red-500 font-mono text-xs mt-4 text-center opacity-0 transition-opacity"></p>
+            </div>
+        </div>
 
         <!-- Tab: Roadmap -->
         <section id="roadmap" class="tab-content max-w-6xl mx-auto mt-8">
             <header class="mb-10">
-                <h1 class="text-3xl font-semibold mb-2 text-accent tracking-tight">Roadmap</h1>
-                <p class="text-white/80 text-sm">Upcoming features for the internal tooling ecosystem.</p>
+                <h1 class="text-3xl font-semibold mb-2 text-accent tracking-tight">Roadmap Upload</h1>
+                <p class="text-white/80 text-sm">Upload PDF/images with topic and description to add entries to the website roadmap.</p>
             </header>
             
-            <div class="space-y-4 relative border-l border-accent/30 ml-3 pl-6">
-                <!-- Node 1 -->
-                <div class="relative">
-                    <div class="absolute -left-[29px] top-1.5 w-2 h-2 rounded-full bg-accent shadow-[0_0_8px_var(--color-accent-glow)]"></div>
-                    <div class="glass-panel p-5 rounded-2xl hover:border-accent/60 transition-colors">
-                        <span class="text-xs font-semibold text-emerald-400 mb-1 block tracking-wider">NOW • V1.0</span>
-                        <h3 class="text-base font-semibold text-white mb-2">Scroll Sequence Pipeline</h3>
-                        <p class="text-sm text-white/70">Implement FastAPI backend handler for up to 300 sequential frame uploads and local storage optimization.</p>
+            <div class="glass-panel p-8 rounded-2xl">
+                <form id="roadmap-upload-form" class="space-y-6">
+                    <!-- Topic -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Topic</label>
+                        <input type="text" id="roadmap-topic" placeholder="Enter topic..." 
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
                     </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Description</label>
+                        <textarea id="roadmap-description" placeholder="Enter description..." rows="4"
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors resize-none"></textarea>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Upload File (PDF/IMAGE)</label>
+                        <div id="roadmap-file-zone" class="relative border border-dashed border-accent/30 rounded-xl p-6 flex flex-col items-center cursor-pointer hover:border-accent/60 transition-colors bg-black/30">
+                            <input type="file" id="roadmap-file-input" accept=".pdf,.jpg,.jpeg,.png,.webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                            <div id="roadmap-file-preview" class="w-20 h-20 rounded-full bg-accent/10 mb-3 flex items-center justify-center border border-accent/20 overflow-hidden">
+                                <svg id="roadmap-file-icon" class="w-8 h-8 text-accent/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <img id="roadmap-file-thumb" class="w-full h-full object-cover hidden" />
+                            </div>
+                            <p id="roadmap-file-name" class="text-xs text-accent/60 tracking-wider">Click to upload PDF or image</p>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-accent text-black font-bold py-3 rounded-xl shadow-[0_0_15px_var(--color-accent-dim)] hover:shadow-[0_0_25px_var(--color-accent-glow)] tracking-wider uppercase transition-all text-sm">
+                        Add to Roadmap
+                    </button>
+                </form>
+                <p id="roadmap-upload-status" class="text-xs mt-4 text-center opacity-0 transition-opacity"></p>
+            </div>
+
+            <!-- Uploaded Entries List -->
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-accent mb-4 tracking-tight">Uploaded Entries</h2>
+                <div id="roadmap-entries-list" class="space-y-4">
+                    <!-- Entries will be loaded dynamically -->
                 </div>
-                <!-- Node 2 -->
-                <div class="relative">
-                    <div class="absolute -left-[29px] top-1.5 w-2 h-2 rounded-full bg-white/20"></div>
-                    <div class="glass-panel p-5 rounded-2xl opacity-60">
-                        <span class="text-xs font-semibold text-accent/50 mb-1 block tracking-wider">UPCOMING</span>
-                        <h3 class="text-base font-semibold text-white mb-2">Canvas Preloading Engine</h3>
-                        <p class="text-sm text-white/70">Optimizing frame delivery to the frontend using IndexedDB for zero-latency scroll animations.</p>
+                <div id="roadmap-empty" class="glass-panel border-dashed p-10 rounded-2xl flex flex-col items-center justify-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-accent/10 mb-4 flex items-center justify-center border border-accent/20">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
                     </div>
+                    <h3 class="text-base font-medium text-white mb-1">No Roadmap Entries Yet</h3>
+                    <p class="text-sm text-accent/70 max-w-sm mx-auto">Use the form above to add your first roadmap entry.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab: Achievement -->
+        <section id="achievement" class="tab-content max-w-6xl mx-auto mt-8">
+            <header class="mb-10">
+                <h1 class="text-3xl font-semibold mb-2 text-accent tracking-tight">Achievement Upload</h1>
+                <p class="text-white/80 text-sm">Upload PDF/images with title, year, and description to add achievements to the website.</p>
+            </header>
+            
+            <div class="glass-panel p-8 rounded-2xl">
+                <form id="achievement-upload-form" class="space-y-6">
+                    <!-- Title -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Title</label>
+                        <input type="text" id="achievement-title" placeholder="Enter title..." 
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Description</label>
+                        <textarea id="achievement-description" placeholder="Enter description..." rows="4"
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors resize-none"></textarea>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Upload File (PDF/IMAGE)</label>
+                        <div id="achievement-file-zone" class="relative border border-dashed border-accent/30 rounded-xl p-6 flex flex-col items-center cursor-pointer hover:border-accent/60 transition-colors bg-black/30">
+                            <input type="file" id="achievement-file-input" accept=".pdf,.jpg,.jpeg,.png,.webp" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                            <div id="achievement-file-preview" class="w-20 h-20 rounded-full bg-accent/10 mb-3 flex items-center justify-center border border-accent/20 overflow-hidden">
+                                <svg id="achievement-file-icon" class="w-8 h-8 text-accent/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <img id="achievement-file-thumb" class="w-full h-full object-cover hidden" />
+                            </div>
+                            <p id="achievement-file-name" class="text-xs text-accent/60 tracking-wider">Click to upload PDF or image</p>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-accent text-black font-bold py-3 rounded-xl shadow-[0_0_15px_var(--color-accent-dim)] hover:shadow-[0_0_25px_var(--color-accent-glow)] tracking-wider uppercase transition-all text-sm">
+                        Add Achievement
+                    </button>
+                </form>
+                <p id="achievement-upload-status" class="text-xs mt-4 text-center opacity-0 transition-opacity"></p>
+            </div>
+
+            <!-- Uploaded Entries List -->
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-accent mb-4 tracking-tight">Uploaded Achievements</h2>
+                <div id="achievement-entries-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Entries will be loaded dynamically -->
+                </div>
+                <div id="achievement-empty" class="glass-panel border-dashed p-10 rounded-2xl flex flex-col items-center justify-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-accent/10 mb-4 flex items-center justify-center border border-accent/20">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                    </div>
+                    <h3 class="text-base font-medium text-white mb-1">No Achievements Yet</h3>
+                    <p class="text-sm text-accent/70 max-w-sm mx-auto">Use the form above to add your first achievement.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab: Hackathon -->
+        <section id="hackathon" class="tab-content max-w-6xl mx-auto mt-8">
+            <header class="mb-10">
+                <h1 class="text-3xl font-semibold mb-2 text-accent tracking-tight">Host Hackathon</h1>
+                <p class="text-white/80 text-sm">Create and manage hackathon events with PS PDFs, schedules, and prize pools.</p>
+            </header>
+            
+            <div class="glass-panel p-8 rounded-2xl">
+                <form id="hackathon-upload-form" class="space-y-6">
+                    <!-- Name -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Hackathon Name</label>
+                        <input type="text" id="hackathon-name" placeholder="Enter hackathon name..." 
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+                    </div>
+
+                    <!-- Start Date & Time -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Start Date & Time</label>
+                            <input type="datetime-local" id="hackathon-start" 
+                                class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">End Date & Time</label>
+                            <input type="datetime-local" id="hackathon-end" 
+                                class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+                        </div>
+                    </div>
+
+                    <!-- PS PDF -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">PS PDF (Problem Statement)</label>
+                        <div id="hackathon-file-zone" class="relative border border-dashed border-accent/30 rounded-xl p-6 flex flex-col items-center cursor-pointer hover:border-accent/60 transition-colors bg-black/30">
+                            <input type="file" id="hackathon-file-input" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                            <div id="hackathon-file-preview" class="w-20 h-20 rounded-full bg-accent/10 mb-3 flex items-center justify-center border border-accent/20 overflow-hidden">
+                                <svg id="hackathon-file-icon" class="w-8 h-8 text-accent/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <img id="hackathon-file-thumb" class="w-full h-full object-cover hidden" />
+                            </div>
+                            <p id="hackathon-file-name" class="text-xs text-accent/60 tracking-wider">Click to upload PDF</p>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Description</label>
+                        <textarea id="hackathon-description" placeholder="Enter description..." rows="4"
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors resize-none"></textarea>
+                    </div>
+
+                    <!-- Prize Pool -->
+                    <div>
+                        <label class="block text-xs font-semibold text-accent mb-2 tracking-wider uppercase">Prize Pool</label>
+                        <input type="text" id="hackathon-prize" placeholder="Enter prize pool (e.g. ₹50K+)..." 
+                            class="w-full bg-[#050505] border border-[var(--color-border)] text-white px-4 py-3 rounded-xl focus:outline-none focus:border-accent font-mono text-sm tracking-wider transition-colors" />
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="w-full bg-accent text-black font-bold py-3 rounded-xl shadow-[0_0_15px_var(--color-accent-dim)] hover:shadow-[0_0_25px_var(--color-accent-glow)] tracking-wider uppercase transition-all text-sm">
+                Host Hackathon
+            </button>
+                </form>
+                <p id="hackathon-upload-status" class="text-xs mt-4 text-center opacity-0 transition-opacity"></p>
+            </div>
+
+            <!-- Uploaded Hackathons List -->
+            <div class="mt-8">
+                <h2 class="text-xl font-semibold text-accent mb-4 tracking-tight">Hosted Hackathons</h2>
+                <div id="hackathon-entries-list" class="space-y-6">
+                    <!-- Entries will be loaded dynamically -->
+                </div>
+                <div id="hackathon-empty" class="glass-panel border-dashed p-10 rounded-2xl flex flex-col items-center justify-center text-center">
+                    <div class="w-12 h-12 rounded-full bg-accent/10 mb-4 flex items-center justify-center border border-accent/20">
+                        <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-base font-medium text-white mb-1">No Hackathons Hosted Yet</h3>
+                    <p class="text-sm text-accent/70 max-w-sm mx-auto">Use the form above to host your first hackathon.</p>
                 </div>
             </div>
         </section>
@@ -715,6 +942,630 @@
                     totalFrames = 0;
                 }});
             });
+
+            // --- TEAM MANAGEMENT ---
+            const addMemberBtn = document.getElementById('add-member-btn');
+            const addMemberModal = document.getElementById('add-member-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const memberPhotoInput = document.getElementById('member-photo-input');
+            const memberPhotoThumb = document.getElementById('member-photo-thumb');
+            const memberPhotoIcon = document.getElementById('member-photo-icon');
+            const memberNameInput = document.getElementById('member-name');
+            const memberYearInput = document.getElementById('member-year');
+            const submitMemberBtn = document.getElementById('submit-member-btn');
+            const memberError = document.getElementById('member-error');
+            const teamGrid = document.getElementById('team-grid');
+            const teamEmpty = document.getElementById('team-empty');
+
+            let selectedMemberPhoto = null;
+
+            // Open modal
+            addMemberBtn.addEventListener('click', () => {
+                addMemberModal.classList.remove('hidden');
+                gsap.fromTo(addMemberModal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+            });
+
+            // Close modal
+            const closeTeamModal = () => {
+                gsap.to(addMemberModal, { opacity: 0, duration: 0.2, onComplete: () => {
+                    addMemberModal.classList.add('hidden');
+                    // Reset form
+                    memberNameInput.value = '';
+                    memberYearInput.value = '';
+                    memberPhotoInput.value = '';
+                    memberPhotoThumb.classList.add('hidden');
+                    memberPhotoIcon.classList.remove('hidden');
+                    memberError.style.opacity = '0';
+                    selectedMemberPhoto = null;
+                }});
+            };
+            closeModalBtn.addEventListener('click', closeTeamModal);
+            addMemberModal.addEventListener('click', (e) => { if (e.target === addMemberModal) closeTeamModal(); });
+
+            // Photo preview
+            memberPhotoInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    selectedMemberPhoto = file;
+                    const url = URL.createObjectURL(file);
+                    memberPhotoThumb.src = url;
+                    memberPhotoThumb.classList.remove('hidden');
+                    memberPhotoIcon.classList.add('hidden');
+                }
+            });
+
+            // Submit member
+            submitMemberBtn.addEventListener('click', async () => {
+                const name = memberNameInput.value.trim();
+                const year = memberYearInput.value.trim();
+
+                if (!name || !year || !selectedMemberPhoto) {
+                    memberError.textContent = 'All fields are required: photo, name, and year.';
+                    memberError.style.opacity = '1';
+                    return;
+                }
+
+                submitMemberBtn.textContent = 'UPLOADING...';
+                submitMemberBtn.classList.add('opacity-70');
+
+                try {
+                    const formData = new FormData();
+                    formData.append('name', name);
+                    formData.append('year', year);
+                    formData.append('photo', selectedMemberPhoto);
+
+                    const res = await fetch('http://localhost:3000/api/team', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (res.ok) {
+                        closeTeamModal();
+                        loadTeamMembers();
+                        showTeamToast(`✓ ${name} added to the team!`, 'success');
+                    } else {
+                        const d = await res.json();
+                        throw new Error(d.error || 'Upload failed');
+                    }
+                } catch (err) {
+                    const errorMsg = (err && typeof err === 'object' && 'message' in err) ? err.message : 'Failed to connect to server. Make sure the dev server is running.';
+                    memberError.textContent = errorMsg;
+                    memberError.style.opacity = '1';
+                    showTeamToast('✗ ' + errorMsg, 'error');
+                } finally {
+                    submitMemberBtn.textContent = 'Add to Team';
+                    submitMemberBtn.classList.remove('opacity-70');
+                }
+            });
+
+            // Toast notification
+            function showTeamToast(msg, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `fixed top-6 right-6 z-[500] px-6 py-4 rounded-xl font-mono text-sm tracking-wider shadow-2xl transition-all duration-500 ${
+                    type === 'success' 
+                        ? 'bg-emerald-500/20 border border-emerald-500/40 text-emerald-300' 
+                        : 'bg-red-500/20 border border-red-500/40 text-red-300'
+                }`;
+                toast.textContent = msg;
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+                document.body.appendChild(toast);
+                
+                requestAnimationFrame(() => {
+                    toast.style.opacity = '1';
+                    toast.style.transform = 'translateY(0)';
+                });
+                
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-20px)';
+                    setTimeout(() => toast.remove(), 500);
+                }, 3000);
+            }
+
+            // Delete member
+            async function deleteMember(id, name) {
+                if (!confirm(`Remove "${name}" from the team?`)) return;
+                try {
+                    const res = await fetch('http://localhost:3000/api/team', {
+                        method: 'DELETE',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id }),
+                    });
+                    if (res.ok) {
+                        showTeamToast(`✓ ${name} removed from the team.`, 'success');
+                        loadTeamMembers();
+                    } else {
+                        const d = await res.json();
+                        showTeamToast(d.error || 'Delete failed', 'error');
+                    }
+                } catch (e) {
+                    showTeamToast('Failed to connect to server.', 'error');
+                }
+            }
+
+            // Load team members on page load
+            async function loadTeamMembers() {
+                try {
+                    const res = await fetch('http://localhost:3000/api/team');
+                    const members = await res.json();
+
+                    teamGrid.innerHTML = '';
+                    if (members.length === 0) {
+                        teamEmpty.classList.remove('hidden');
+                        teamGrid.classList.add('hidden');
+                    } else {
+                        teamEmpty.classList.add('hidden');
+                        teamGrid.classList.remove('hidden');
+                        members.forEach(m => {
+                            const card = document.createElement('div');
+                            card.className = 'glass-panel rounded-xl overflow-hidden hover:scale-[1.02] transition-all relative group';
+                            card.innerHTML = `
+                                <div class="aspect-square overflow-hidden relative">
+                                    <img src="http://localhost:3000${m.photo}" alt="${m.name}" class="w-full h-full object-cover" />
+                                    <button onclick="window.__deleteMember(${m.id}, '${m.name.replace(/'/g, "\\'")}')" 
+                                        class="absolute top-2 right-2 w-8 h-8 bg-red-500/80 hover:bg-red-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg cursor-pointer"
+                                        title="Remove member">
+                                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="p-3">
+                                    <h4 class="text-sm font-bold text-white truncate">${m.name}</h4>
+                                    <p class="text-xs text-accent/70 mt-1">${m.year}</p>
+                                </div>
+                            `;
+                            teamGrid.appendChild(card);
+                        });
+                    }
+                } catch (e) {
+                    teamEmpty.classList.remove('hidden');
+                    teamGrid.classList.add('hidden');
+                }
+            }
+            // Expose delete to onclick handlers
+            window.__deleteMember = deleteMember;
+            loadTeamMembers();
+
+            // --- Roadmap Upload Functionality ---
+            const roadmapForm = document.getElementById('roadmap-upload-form');
+            const roadmapFileInput = document.getElementById('roadmap-file-input');
+            const roadmapFilePreview = document.getElementById('roadmap-file-preview');
+            const roadmapFileIcon = document.getElementById('roadmap-file-icon');
+            const roadmapFileThumb = document.getElementById('roadmap-file-thumb');
+            const roadmapFileName = document.getElementById('roadmap-file-name');
+            const roadmapUploadStatus = document.getElementById('roadmap-upload-status');
+            const roadmapEntriesList = document.getElementById('roadmap-entries-list');
+            const roadmapEmpty = document.getElementById('roadmap-empty');
+            
+            let roadmapFile = null;
+
+            // File preview
+            roadmapFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    roadmapFile = file;
+                    roadmapFileName.textContent = file.name;
+                    
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            roadmapFileThumb.src = e.target.result;
+                            roadmapFileThumb.classList.remove('hidden');
+                            roadmapFileIcon.classList.add('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        roadmapFileThumb.classList.add('hidden');
+                        roadmapFileIcon.classList.remove('hidden');
+                    }
+                }
+            });
+
+            // Form submission
+            roadmapForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const topic = document.getElementById('roadmap-topic').value;
+                const description = document.getElementById('roadmap-description').value;
+                
+                if (!topic || !description) {
+                    roadmapUploadStatus.textContent = 'Please fill in all fields';
+                    roadmapUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('topic', topic);
+                formData.append('description', description);
+                if (roadmapFile) {
+                    formData.append('file', roadmapFile);
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/roadmap', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        roadmapUploadStatus.textContent = '✓ Roadmap entry added successfully!';
+                        roadmapUploadStatus.className = 'text-xs mt-4 text-center text-emerald-400 opacity-100 transition-opacity';
+                        roadmapForm.reset();
+                        roadmapFile = null;
+                        roadmapFileThumb.classList.add('hidden');
+                        roadmapFileIcon.classList.remove('hidden');
+                        roadmapFileName.textContent = 'Click to upload PDF or image';
+                        loadRoadmapEntries();
+                        
+                        setTimeout(() => {
+                            roadmapUploadStatus.style.opacity = '0';
+                        }, 3000);
+                    } else {
+                        const d = await res.json();
+                        roadmapUploadStatus.textContent = d.error || 'Failed to add entry';
+                        roadmapUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                    }
+                } catch (err) {
+                    roadmapUploadStatus.textContent = 'Failed to connect to server';
+                    roadmapUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                }
+            });
+
+            // Load roadmap entries
+            async function loadRoadmapEntries() {
+                try {
+                    const res = await fetch('http://localhost:3000/api/roadmap');
+                    const entries = await res.json();
+
+                    roadmapEntriesList.innerHTML = '';
+                    if (entries.length === 0) {
+                        roadmapEmpty.classList.remove('hidden');
+                        roadmapEntriesList.classList.add('hidden');
+                    } else {
+                        roadmapEmpty.classList.add('hidden');
+                        roadmapEntriesList.classList.remove('hidden');
+                        entries.forEach(entry => {
+                            const card = document.createElement('div');
+                            card.className = 'glass-panel p-5 rounded-2xl hover:border-accent/60 transition-colors relative group';
+                            card.innerHTML = `
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <span class="text-xs font-semibold text-accent mb-1 block tracking-wider">UPLOADED • ${new Date(entry.createdAt).toLocaleDateString()}</span>
+                                        <h3 class="text-base font-semibold text-white">${entry.topic}</h3>
+                                    </div>
+                                    <button onclick="window.__deleteRoadmapEntry(${entry.id})" 
+                                        class="p-2 text-white/50 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                                        title="Delete entry">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                <p class="text-sm text-white/70 mb-3">${entry.description}</p>
+                                ${entry.fileUrl ? `<a href="http://localhost:3000${entry.fileUrl}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/20 border border-accent/30 rounded-lg text-accent text-xs tracking-wider hover:bg-accent/30 transition-colors">${entry.fileName || 'View File'}</a>` : ''}
+                            `;
+                            roadmapEntriesList.appendChild(card);
+                        });
+                    }
+                } catch (e) {
+                    roadmapEmpty.classList.remove('hidden');
+                    roadmapEntriesList.classList.add('hidden');
+                }
+            }
+
+            // Delete roadmap entry
+            window.__deleteRoadmapEntry = async (id) => {
+                if (!confirm('Delete this roadmap entry?')) return;
+                try {
+                    const res = await fetch(`http://localhost:3000/api/roadmap?id=${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (res.ok) {
+                        showTeamToast('✓ Entry deleted successfully', 'success');
+                        loadRoadmapEntries();
+                    } else {
+                        showTeamToast('Failed to delete entry', 'error');
+                    }
+                } catch (e) {
+                    showTeamToast('Failed to connect to server', 'error');
+                }
+            };
+
+            // Load roadmap entries on page load
+            loadRoadmapEntries();
+
+            // --- Achievement Upload Functionality ---
+            const achievementForm = document.getElementById('achievement-upload-form');
+            const achievementFileInput = document.getElementById('achievement-file-input');
+            const achievementFilePreview = document.getElementById('achievement-file-preview');
+            const achievementFileIcon = document.getElementById('achievement-file-icon');
+            const achievementFileThumb = document.getElementById('achievement-file-thumb');
+            const achievementFileName = document.getElementById('achievement-file-name');
+            const achievementUploadStatus = document.getElementById('achievement-upload-status');
+            const achievementEntriesList = document.getElementById('achievement-entries-list');
+            const achievementEmpty = document.getElementById('achievement-empty');
+            
+            let achievementFile = null;
+
+            // File preview
+            achievementFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    achievementFile = file;
+                    achievementFileName.textContent = file.name;
+                    
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            achievementFileThumb.src = e.target.result;
+                            achievementFileThumb.classList.remove('hidden');
+                            achievementFileIcon.classList.add('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        achievementFileThumb.classList.add('hidden');
+                        achievementFileIcon.classList.remove('hidden');
+                    }
+                }
+            });
+
+            // Form submission
+            achievementForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const title = document.getElementById('achievement-title').value;
+                const year = document.getElementById('achievement-year').value;
+                const description = document.getElementById('achievement-description').value;
+                
+                if (!title || !description) {
+                    achievementUploadStatus.textContent = 'Please fill in all fields';
+                    achievementUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('description', description);
+                if (achievementFile) {
+                    formData.append('file', achievementFile);
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/achievement', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        achievementUploadStatus.textContent = '✓ Achievement added successfully!';
+                        achievementUploadStatus.className = 'text-xs mt-4 text-center text-emerald-400 opacity-100 transition-opacity';
+                        achievementForm.reset();
+                        achievementFile = null;
+                        achievementFileThumb.classList.add('hidden');
+                        achievementFileIcon.classList.remove('hidden');
+                        achievementFileName.textContent = 'Click to upload PDF or image';
+                        loadAchievementEntries();
+                        
+                        setTimeout(() => {
+                            achievementUploadStatus.style.opacity = '0';
+                        }, 3000);
+                    } else {
+                        const d = await res.json();
+                        achievementUploadStatus.textContent = d.error || 'Failed to add entry';
+                        achievementUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                    }
+                } catch (err) {
+                    achievementUploadStatus.textContent = 'Failed to connect to server';
+                    achievementUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                }
+            });
+
+            // Load achievement entries
+            async function loadAchievementEntries() {
+                try {
+                    const res = await fetch('http://localhost:3000/api/achievement');
+                    const entries = await res.json();
+
+                    achievementEntriesList.innerHTML = '';
+                    if (entries.length === 0) {
+                        achievementEmpty.classList.remove('hidden');
+                        achievementEntriesList.classList.add('hidden');
+                    } else {
+                        achievementEmpty.classList.add('hidden');
+                        achievementEntriesList.classList.remove('hidden');
+                        entries.forEach(entry => {
+                            const card = document.createElement('div');
+                            card.className = 'glass-panel p-5 rounded-2xl hover:border-accent/60 transition-colors relative group';
+                            card.innerHTML = `
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-base font-semibold text-white">${entry.title}</h3>
+                                    </div>
+                                    <button onclick="window.__deleteAchievementEntry(${entry.id})" 
+                                        class="p-2 text-white/50 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                                        title="Delete entry">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                <p class="text-sm text-white/70 mb-3">${entry.description}</p>
+                                ${entry.fileUrl ? `<a href="http://localhost:3000${entry.fileUrl}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/20 border border-accent/30 rounded-lg text-accent text-xs tracking-wider hover:bg-accent/30 transition-colors">${entry.fileName || 'View File'}</a>` : ''}
+                            `;
+                            achievementEntriesList.appendChild(card);
+                        });
+                    }
+                } catch (e) {
+                    achievementEmpty.classList.remove('hidden');
+                    achievementEntriesList.classList.add('hidden');
+                }
+            }
+
+            // Delete achievement entry
+            window.__deleteAchievementEntry = async (id) => {
+                if (!confirm('Delete this achievement entry?')) return;
+                try {
+                    const res = await fetch(`http://localhost:3000/api/achievement?id=${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (res.ok) {
+                        showTeamToast('✓ Entry deleted successfully', 'success');
+                        loadAchievementEntries();
+                    } else {
+                        showTeamToast('Failed to delete entry', 'error');
+                    }
+                } catch (e) {
+                    showTeamToast('Failed to connect to server', 'error');
+                }
+            };
+
+            // Load achievement entries on page load
+            loadAchievementEntries();
+
+            // --- Hackathon Upload Functionality ---
+            const hackathonForm = document.getElementById('hackathon-upload-form');
+            const hackathonFileInput = document.getElementById('hackathon-file-input');
+            const hackathonFilePreview = document.getElementById('hackathon-file-preview');
+            const hackathonFileIcon = document.getElementById('hackathon-file-icon');
+            const hackathonFileThumb = document.getElementById('hackathon-file-thumb');
+            const hackathonFileName = document.getElementById('hackathon-file-name');
+            const hackathonUploadStatus = document.getElementById('hackathon-upload-status');
+            const hackathonEntriesList = document.getElementById('hackathon-entries-list');
+            const hackathonEmpty = document.getElementById('hackathon-empty');
+            
+            let hackathonFile = null;
+
+            // File preview
+            hackathonFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    hackathonFile = file;
+                    hackathonFileName.textContent = file.name;
+                    hackathonFileIcon.classList.add('hidden');
+                    hackathonFileThumb.classList.add('hidden');
+                }
+            });
+
+            // Form submission
+            hackathonForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const name = document.getElementById('hackathon-name').value;
+                const startDateTime = document.getElementById('hackathon-start').value;
+                const endDateTime = document.getElementById('hackathon-end').value;
+                const description = document.getElementById('hackathon-description').value;
+                const prizePool = document.getElementById('hackathon-prize').value;
+                
+                if (!name || !startDateTime || !endDateTime) {
+                    hackathonUploadStatus.textContent = 'Please fill in all required fields';
+                    hackathonUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('name', name);
+                formData.append('startDateTime', startDateTime);
+                formData.append('endDateTime', endDateTime);
+                formData.append('description', description);
+                formData.append('prizePool', prizePool);
+                if (hackathonFile) {
+                    formData.append('file', hackathonFile);
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3000/api/hackathon', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (res.ok) {
+                        hackathonUploadStatus.textContent = '✓ Hackathon hosted successfully!';
+                        hackathonUploadStatus.className = 'text-xs mt-4 text-center text-emerald-400 opacity-100 transition-opacity';
+                        hackathonForm.reset();
+                        hackathonFile = null;
+                        hackathonFileName.textContent = 'Click to upload PDF';
+                        hackathonFileIcon.classList.remove('hidden');
+                        loadHackathonEntries();
+                        
+                        setTimeout(() => {
+                            hackathonUploadStatus.style.opacity = '0';
+                        }, 3000);
+                    } else {
+                        const d = await res.json();
+                        hackathonUploadStatus.textContent = d.error || 'Failed to host hackathon';
+                        hackathonUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                    }
+                } catch (err) {
+                    hackathonUploadStatus.textContent = 'Failed to connect to server';
+                    hackathonUploadStatus.className = 'text-xs mt-4 text-center text-red-400 opacity-100 transition-opacity';
+                }
+            });
+
+            // Load hackathon entries
+            async function loadHackathonEntries() {
+                try {
+                    const res = await fetch('http://localhost:3000/api/hackathon');
+                    const entries = await res.json();
+
+                    hackathonEntriesList.innerHTML = '';
+                    if (entries.length === 0) {
+                        hackathonEmpty.classList.remove('hidden');
+                        hackathonEntriesList.classList.add('hidden');
+                    } else {
+                        hackathonEmpty.classList.add('hidden');
+                        hackathonEntriesList.classList.remove('hidden');
+                        entries.forEach(entry => {
+                            const startDate = new Date(entry.startDateTime);
+                            const endDate = new Date(entry.endDateTime);
+                            const card = document.createElement('div');
+                            card.className = 'glass-panel p-6 rounded-2xl hover:border-accent/60 transition-colors relative group';
+                            card.innerHTML = `
+                                <div class="flex items-start justify-between mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-white mb-2">${entry.name}</h3>
+                                        <div class="flex items-center gap-4 text-sm">
+                                            <span class="text-accent">Start: ${startDate.toLocaleString()}</span>
+                                            <span class="text-white/40">|</span>
+                                            <span class="text-accent">End: ${endDate.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                    <button onclick="window.__deleteHackathonEntry(${entry.id})" 
+                                        class="p-2 text-white/50 hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
+                                        title="Delete entry">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                    </button>
+                                </div>
+                                <p class="text-white/60 text-sm mb-3">${entry.description}</p>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-[#ff8c00] text-xs tracking-widest">🏆 ${entry.prizePool || 'No prize pool'}</span>
+                                    ${entry.fileUrl ? `<a href="http://localhost:3000${entry.fileUrl}" target="_blank" class="inline-flex items-center gap-2 px-3 py-1.5 bg-accent/20 border border-accent/30 rounded-lg text-accent text-xs tracking-wider hover:bg-accent/30 transition-colors">${entry.fileName || 'View PS PDF'}</a>` : ''}
+                                </div>
+                            `;
+                            hackathonEntriesList.appendChild(card);
+                        });
+                    }
+                } catch (e) {
+                    hackathonEmpty.classList.remove('hidden');
+                    hackathonEntriesList.classList.add('hidden');
+                }
+            }
+
+            // Delete hackathon entry
+            window.__deleteHackathonEntry = async (id) => {
+                if (!confirm('Delete this hackathon?')) return;
+                try {
+                    const res = await fetch(`http://localhost:3000/api/hackathon?id=${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (res.ok) {
+                        showTeamToast('✓ Hackathon deleted successfully', 'success');
+                        loadHackathonEntries();
+                    } else {
+                        showTeamToast('Failed to delete hackathon', 'error');
+                    }
+                } catch (e) {
+                    showTeamToast('Failed to connect to server', 'error');
+                }
+            };
+
+            // Load hackathon entries on page load
+            loadHackathonEntries();
 
         });
     </script>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "win ",
+    "description": "azadi ",
+    "fileUrl": "/uploads/1776076939412.jpg",
+    "fileName": "john-wick-4-keanu-8500x5000-9483.jpg",
+    "createdAt": "2026-04-13T10:42:19.427Z"
+  },
+  {
+    "id": 2,
+    "title": "a",
+    "description": "a",
+    "fileUrl": "/uploads/1776077176328.jpg",
+    "fileName": "itachi-uchiha-naruto-amoled-black-background-minimal-art-3840x2160-6478.jpg",
+    "createdAt": "2026-04-13T10:46:16.332Z"
+  },
+  {
+    "id": 3,
+    "title": "a",
+    "description": "r",
+    "fileUrl": "/uploads/1776077185528.jpeg",
+    "fileName": "oppenheimer-5120x2880-15898.jpeg",
+    "createdAt": "2026-04-13T10:46:25.534Z"
+  }
+]

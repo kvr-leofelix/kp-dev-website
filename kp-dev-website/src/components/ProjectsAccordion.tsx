@@ -41,7 +41,7 @@ export function ProjectsAccordion() {
         {/* Mirroring the text block from Beat B as a static element here */}
         <div className="mb-16">
           <div className="font-mono text-sm md:text-base tracking-[0.2em] mb-4 text-[#8a8a8a]">
-            {'>_ $ LS /PROJECTS'}
+            {'>_ LS /PROJECTS'}
           </div>
           <h2 className="text-[6rem] md:text-[8rem] xl:text-[10rem] leading-[0.85] font-bebas text-white tracking-widest uppercase">
             OUR PROJECTS

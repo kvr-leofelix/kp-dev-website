@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Bebas_Neue, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { TargetCursor } from "@/components/TargetCursor";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const bebas = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-bebas" });
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${bebas.variable} ${mono.variable} font-sans antialiased bg-[#050505]`}>
+        <TargetCursor />
         <Navbar />
         {children}
       </body>
